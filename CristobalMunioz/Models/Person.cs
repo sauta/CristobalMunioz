@@ -73,6 +73,8 @@ public partial class Person
     /// </summary>
     public DateTime ModifiedDate { get; set; }
 
+    public int? IdPermiso { get; set; }
+
     public virtual BusinessEntity BusinessEntity { get; set; } = null!;
 
     public virtual ICollection<BusinessEntityContact> BusinessEntityContacts { get; set; } = new List<BusinessEntityContact>();
@@ -82,6 +84,8 @@ public partial class Person
     public virtual ICollection<EmailAddress> EmailAddresses { get; set; } = new List<EmailAddress>();
 
     public virtual Employee? Employee { get; set; }
+
+    public virtual Permiso? IdPermisoNavigation { get; set; }
 
     public virtual Password? Password { get; set; }
 

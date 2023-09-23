@@ -67,6 +67,8 @@ public partial class AdventureWorks2019Context : DbContext
 
     public virtual DbSet<Password> Passwords { get; set; }
 
+    public virtual DbSet<Permiso> Permisos { get; set; }
+
     public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<PersonCreditCard> PersonCreditCards { get; set; }
@@ -193,9 +195,9 @@ public partial class AdventureWorks2019Context : DbContext
 
     public virtual DbSet<WorkOrderRouting> WorkOrderRoutings { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=AdventureWorks2019;Trusted_Connection=True;TrustServerCertificate=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=AdventureWorks2019;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1043,6 +1045,19 @@ public partial class AdventureWorks2019Context : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        modelBuilder.Entity<Permiso>(entity =>
+        {
+            entity.ToTable("Permisos", "Person");
+
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.Permiso1)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Permiso");
+        });
+
         modelBuilder.Entity<Person>(entity =>
         {
             entity.HasKey(e => e.BusinessEntityId).HasName("PK_Person_BusinessEntityID");
@@ -1081,6 +1096,7 @@ public partial class AdventureWorks2019Context : DbContext
             entity.Property(e => e.FirstName)
                 .HasMaxLength(50)
                 .HasComment("First name of the person.");
+            entity.Property(e => e.IdPermiso).HasColumnName("id_permiso");
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .HasComment("Last name of the person.");
@@ -1110,6 +1126,10 @@ public partial class AdventureWorks2019Context : DbContext
             entity.HasOne(d => d.BusinessEntity).WithOne(p => p.Person)
                 .HasForeignKey<Person>(d => d.BusinessEntityId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.IdPermisoNavigation).WithMany(p => p.People)
+                .HasForeignKey(d => d.IdPermiso)
+                .HasConstraintName("FK_Person_Permisos");
         });
 
         modelBuilder.Entity<PersonCreditCard>(entity =>
