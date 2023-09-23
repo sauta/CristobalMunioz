@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CristobalMunioz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CristobalMunioz.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly AdventureWorks2019Context _context;
@@ -18,9 +20,50 @@ namespace CristobalMunioz.Controllers
             _context = context;
         }
 
-        // GET: Employees
+        //public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
+        //{
+        //    var datos = _context.Employees.ToList();
+
+
+
+        //    // Calcula el índice de inicio y fin de la página actual
+        //    int startIndex = (pageNumber - 1) * pageSize;
+        //    int endIndex = startIndex + pageSize;
+
+
+
+        //    // Obtiene los elementos de la página actual
+        //    List<Employees> itemsToDisplay = datos.Skip(startIndex).Take(pageSize).ToList();
+
+
+
+        //    // Calcula el número total de páginas
+        //    int totalItems = datos.Count;
+        //    int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+
+
+        //    // Pasa los datos a la vista junto con información de paginación
+        //    ViewData["PageNumber"] = pageNumber;
+        //    ViewData["PageSize"] = pageSize;
+        //    ViewData["TotalPages"] = totalPages;
+        //    ViewData["TotalItems"] = totalItems;
+
+
+
+        //    return View(itemsToDisplay);
+
+
+
+        //    return _context.Departments != null ?
+        //                  View(await _context.Departments.ToListAsync()) :
+        //                  Problem("Entity set 'AdventureWorks2019Context.Departments'  is null.");
+        //}
+
+        //GET: Employees
         public async Task<IActionResult> Index()
         {
+
             var adventureWorks2019Context = _context.Employees.Include(e => e.BusinessEntity);
             return View(await adventureWorks2019Context.ToListAsync());
         }

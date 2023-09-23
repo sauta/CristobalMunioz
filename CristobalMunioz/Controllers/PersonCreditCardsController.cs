@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CristobalMunioz.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CristobalMunioz.Controllers
 {
+    [Authorize]
     public class PersonCreditCardsController : Controller
     {
         private readonly AdventureWorks2019Context _context;

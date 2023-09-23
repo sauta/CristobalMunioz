@@ -105,3 +105,24 @@
 }
     </tbody>
 </table>
+<div>
+    Página @(ViewData["PageNumber"]) de @(ViewData["TotalPages"])
+</div>
+<div>
+    Mostrando @(ViewData["PageSize"]) elementos de un total de @(ViewData["TotalItems"])
+</div>
+
+<div class="pagination">
+    @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+    {
+        if (i == (int)ViewData["PageNumber"])
+        {
+            <span>@i </span> 
+        }
+        else
+        {
+            <a href="/People/Index?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i </a> 
+        }
+        
+    }
+</div>
