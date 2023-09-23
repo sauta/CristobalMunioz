@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CristobalMunioz.Controllers
 {
-    [Authorize]
+    
     public class PeopleController : Controller
     {
         private readonly AdventureWorks2019Context _context;
@@ -27,6 +27,7 @@ namespace CristobalMunioz.Controllers
         //    var adventureWorks2019Context = _context.People.Include(p => p.BusinessEntity);
         //    return View(await adventureWorks2019Context.ToListAsync());
         //}
+        [Authorize("1")]
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
             var datos = _context.People.ToList();
@@ -60,11 +61,6 @@ namespace CristobalMunioz.Controllers
 
             return View(itemsToDisplay);
 
-
-
-            return _context.Departments != null ?
-                          View(await _context.Departments.ToListAsync()) :
-                          Problem("Entity set 'AdventureWorks2019Context.Departments'  is null.");
         }
 
         // GET: People/Details/5

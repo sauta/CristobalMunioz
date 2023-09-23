@@ -5,11 +5,11 @@ namespace CristobalMunioz.Models;
 
 public partial class Permiso
 {
-    public int Id { get; set; }
+    public int PermisoId { get; set; }
 
     public string Permiso1 { get; set; } = null!;
 
     public string? Descripcion { get; set; }
 
-    public virtual ICollection<Person> People { get; set; } = new List<Person>();
+    public virtual ICollection<Person> BusinessEntities { get; set; } = new List<Person>();
 }

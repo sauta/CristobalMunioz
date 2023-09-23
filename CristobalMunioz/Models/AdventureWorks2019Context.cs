@@ -195,10 +195,6 @@ public partial class AdventureWorks2019Context : DbContext
 
     public virtual DbSet<WorkOrderRouting> WorkOrderRoutings { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=AdventureWorks2019;Trusted_Connection=True;TrustServerCertificate=True;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
@@ -1049,6 +1045,7 @@ public partial class AdventureWorks2019Context : DbContext
         {
             entity.ToTable("Permisos", "Person");
 
+            entity.Property(e => e.PermisoId).HasColumnName("PermisoID");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(500)
                 .IsUnicode(false);
@@ -1096,7 +1093,6 @@ public partial class AdventureWorks2019Context : DbContext
             entity.Property(e => e.FirstName)
                 .HasMaxLength(50)
                 .HasComment("First name of the person.");
-            entity.Property(e => e.IdPermiso).HasColumnName("id_permiso");
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .HasComment("Last name of the person.");
@@ -1127,9 +1123,24 @@ public partial class AdventureWorks2019Context : DbContext
                 .HasForeignKey<Person>(d => d.BusinessEntityId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.IdPermisoNavigation).WithMany(p => p.People)
-                .HasForeignKey(d => d.IdPermiso)
-                .HasConstraintName("FK_Person_Permisos");
+            entity.HasMany(d => d.Permisos).WithMany(p => p.BusinessEntities)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PermisosByPerson",
+                    r => r.HasOne<Permiso>().WithMany()
+                        .HasForeignKey("PermisoId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_PermisosByPerson_Permisos"),
+                    l => l.HasOne<Person>().WithMany()
+                        .HasForeignKey("BusinessEntityId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_PermisosByPerson_Person"),
+                    j =>
+                    {
+                        j.HasKey("BusinessEntityId", "PermisoId");
+                        j.ToTable("PermisosByPerson");
+                        j.IndexerProperty<int>("BusinessEntityId").HasColumnName("BusinessEntityID");
+                        j.IndexerProperty<int>("PermisoId").HasColumnName("PermisoID");
+                    });
         });
 
         modelBuilder.Entity<PersonCreditCard>(entity =>

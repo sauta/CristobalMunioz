@@ -23,9 +23,9 @@ builder.Services.AddAuthentication("CookieAuth")
     }
 );
 
-//using var serviceScope = builder.Services.BuildServiceProvider().CreateScope();
-//var dbContext = serviceScope.ServiceProvider.GetRequiredService<AdventureWorks2019Context>();
-//var permissionsList = dbContext.Permisos.Select(p => p.Descripcion).ToList();
+using var serviceScope = builder.Services.BuildServiceProvider().CreateScope();
+var dbContext = serviceScope.ServiceProvider.GetRequiredService<AdventureWorks2019Context>();
+var permissionsList = dbContext.Permisos.Select(p => p.PermisoId).ToList();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -35,11 +35,12 @@ builder.Services.AddAuthorization(options =>
             context.User.HasClaim(c =>
                 (c.Type == ClaimTypes.Role && c.Value == "Global Administrator"))));
 
-    //foreach (var perm in permissionsList)
-    //{
-    //    options.AddPolicy(perm, policy =>
-    //        policy.AddRequirements(new PermissionRequirement(perm)));
-    //}
+    foreach (var perm in permissionsList)
+    {
+        string strPerm = perm.ToString();
+        options.AddPolicy(strPerm, policy =>
+            policy.AddRequirements(new PermissionRequirement(strPerm)));
+    }
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -67,6 +68,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
