@@ -40,7 +40,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="PersonCreditCards" asp-action="Index">Personas y Tarjetas de Credito</a>
                                 </div>
                             </li>
-                            @if (User.IsInRole("Global Administrator") || User.IsInRole("4"))
+                            @if (User.HasClaim("Permiso", "5") || User.HasClaim("Permiso", "4"))
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,7 +51,7 @@
                                     </div>
                                 </li>
                             }
-                            @if (User.IsInRole("3") || User.IsInRole("4"))
+                            @if (User.HasClaim("Permiso", "3") || User.HasClaim("Permiso", "4"))
                             {
                                 <li class="nav-item dropdown">
 
@@ -60,7 +60,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
-                                        @if (User.IsInRole("4"))
+                                        @if (User.HasClaim("Permiso", "4"))
                                         {
                                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategories" asp-action="Index">Categorias</a>
                                         }

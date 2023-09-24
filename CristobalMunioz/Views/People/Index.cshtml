@@ -4,125 +4,128 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container mt-5">
+    <h1>Person List</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PersonType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameStyle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MiddleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Suffix)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailPromotion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalContactInfo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Demographics)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rowguid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BusinessEntity)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PersonType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameStyle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Suffix)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailPromotion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdditionalContactInfo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Demographics)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rowguid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BusinessEntityId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BusinessEntityId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BusinessEntityId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<div>
-    Página @(ViewData["PageNumber"]) de @(ViewData["TotalPages"])
-</div>
-<div>
-    Mostrando @(ViewData["PageSize"]) elementos de un total de @(ViewData["TotalItems"])
-</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PersonType)</th>
+                <th>@Html.DisplayNameFor(model => model.NameStyle)</th>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.MiddleName)</th>
+                <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                <th>@Html.DisplayNameFor(model => model.EmailPromotion)</th>
+                <th>@Html.DisplayNameFor(model => model.Rowguid)</th>
+                <th>@Html.DisplayNameFor(model => model.ModifiedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.BusinessEntity.BusinessEntityId)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.PersonType)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NameStyle)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EmailPromotion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Rowguid)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ModifiedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityId)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.BusinessEntityId" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.BusinessEntityId" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.BusinessEntityId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<div class="pagination">
-    @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
-    {
-        if (i == (int)ViewData["PageNumber"])
+    <div>
+        Page @(ViewData["PageNumber"]) of @(ViewData["TotalPages"])
+    </div>
+    <div>
+        Showing @(ViewData["PageSize"]) elements of a total of @(ViewData["TotalItems"])
+    </div>
+
+    <div class="pagination">
+        @if ((int)ViewData["TotalPages"] > 1)
         {
-            <span>@i </span> 
+            <ul class="pagination">
+                @if ((int)ViewData["PageNumber"] > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?pageNumber=1&pageSize=@ViewData["PageSize"]">Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?pageNumber=@(((int)ViewData["PageNumber"]) - 1)&pageSize=@ViewData["PageSize"]">Anterior</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Primera</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                }
+
+                @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+                {
+                    // Mostrar solo un número limitado de páginas cercanas a la página actual
+                    if (i == (int)ViewData["PageNumber"] ||
+                    i == (int)ViewData["PageNumber"] - 1 ||
+                    i == (int)ViewData["PageNumber"] + 1)
+                    {
+                        <li class="page-item @(i == (int)ViewData["PageNumber"] ? "active" : "")">
+                            <a class="page-link" href="?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i</a>
+                        </li>
+                    }
+                    else if (i == 1 || i == (int)ViewData["TotalPages"])
+                    {
+                        // Mostrar siempre la primera y la última página
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i</a>
+                        </li>
+                    }
+                    else if (i == (int)ViewData["PageNumber"] - 2 || i == (int)ViewData["PageNumber"] + 2)
+                    {
+                        // Mostrar puntos suspensivos
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+                }
+
+                @if ((int)ViewData["PageNumber"] < (int)ViewData["TotalPages"])
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?pageNumber=@(((int)ViewData["PageNumber"]) + 1)&pageSize=@ViewData["PageSize"]">Siguiente</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?pageNumber=@(ViewData["TotalPages"])&pageSize=@ViewData["PageSize"]">Última</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">Siguiente</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Última</span>
+                    </li>
+                }
+            </ul>
         }
-        else
-        {
-            <a href="/People/Index?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i </a> 
-        }
-        
-    }
-</div>
+    </div>
+

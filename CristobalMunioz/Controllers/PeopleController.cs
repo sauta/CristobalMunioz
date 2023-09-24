@@ -29,37 +29,49 @@ namespace CristobalMunioz.Controllers
         //}
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
-            var datos = _context.People.ToList();
+            try
+            {
+                // Usar IQueryable para permitir la paginación en la base de datos
+                var datos = _context.People.AsQueryable();
 
+                // Aplicar ordenamiento inicial si es necesario
+                datos = datos.OrderBy(p => p.BusinessEntityId); // Reemplaza "Nombre" con el campo que desees ordenar
 
+                // Validar los parámetros de paginación
+                if (pageNumber < 1)
+                {
+                    pageNumber = 1;
+                }
+                if (pageSize < 1)
+                {
+                    pageSize = 5;
+                }
 
-            // Calcula el índice de inicio y fin de la página actual
-            int startIndex = (pageNumber - 1) * pageSize;
-            int endIndex = startIndex + pageSize;
+                // Calcula el índice de inicio y fin de la página actual
+                int startIndex = (pageNumber - 1) * pageSize;
+                int endIndex = startIndex + pageSize;
 
+                // Obtiene los elementos de la página actual
+                List<Person> itemsToDisplay = datos.Skip(startIndex).Take(pageSize).ToList();
 
+                // Calcula el número total de páginas
+                int totalItems = datos.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
-            // Obtiene los elementos de la página actual
-            List<Person> itemsToDisplay = datos.Skip(startIndex).Take(pageSize).ToList();
+                // Pasa los datos a la vista junto con información de paginación
+                ViewData["PageNumber"] = pageNumber;
+                ViewData["PageSize"] = pageSize;
+                ViewData["TotalPages"] = totalPages;
+                ViewData["TotalItems"] = totalItems;
 
-
-
-            // Calcula el número total de páginas
-            int totalItems = datos.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-
-
-            // Pasa los datos a la vista junto con información de paginación
-            ViewData["PageNumber"] = pageNumber;
-            ViewData["PageSize"] = pageSize;
-            ViewData["TotalPages"] = totalPages;
-            ViewData["TotalItems"] = totalItems;
-
-
-
-            return View(itemsToDisplay);
-
+                return View(itemsToDisplay);
+            }
+            catch (Exception ex)
+            {
+                // Manejar excepciones y mostrar un mensaje de error
+                ViewData["ErrorMessage"] = "Error al cargar los datos: " + ex.Message;
+                return View(new List<Person>());
+            }
         }
 
         // GET: People/Details/5

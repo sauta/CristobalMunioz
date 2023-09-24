@@ -92,17 +92,14 @@ namespace CristobalMunioz.Controllers
             TempData["ErrorMessage"] = "Email o Contraseña Incorrectos";
             return RedirectToAction("Index", "Login");
         }
-        [Authorize("4")]
+        
         public async Task<IActionResult> Hashing(string hash)
         {
-            var a = Argon2PasswordHasher.HashPassword(hash);
-
-            var info = a.ToString();
-
+            TempData["Hashing"] = Argon2PasswordHasher.HashPassword(hash);
             return View();
         }
 
-        [Authorize]
+        [Authorize("2")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("CookieAuth");
