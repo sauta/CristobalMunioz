@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using CristobalMunioz.Helpers;
 using CristobalMunioz.Models;
 using System.Security.Claims;
-using CristobalMunioz.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddDbContext<AdventureWorks2019Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureWorks2019"))
@@ -31,9 +32,9 @@ builder.Services.AddAuthorization(options =>
 {
     // Add the DefaultGlobalAdmin policy
     options.AddPolicy("DefaultGlobalAdmin", policy =>
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c =>
-                (c.Type == ClaimTypes.Role && c.Value == "Global Administrator"))));
+           policy.RequireAssertion(context =>
+               context.User.HasClaim(c =>
+                   (c.Type == ClaimTypes.Role && c.Value == "Global Administrator"))));
 
     foreach (var perm in permissionsList)
     {
@@ -44,10 +45,6 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -64,6 +61,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

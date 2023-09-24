@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="~/CristobalMunioz.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <input name="__RequestVerificationToken" type="hidden" value="@Html.AntiForgeryToken()" />
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -23,15 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                         @if (!User.Identity.IsAuthenticated)
-                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
-                        </li>                            
-                        }
-                          @if (User.Identity.IsAuthenticated)
-                        {
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Personas
@@ -47,6 +40,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Empleados</a>
+
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -55,15 +49,22 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategories" asp-action="Index">Categorias</a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ventas
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
+
                             </div>
                         </li>
                         <li>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Cerrar Sesión</a>
 
                         </li>
-
-                        }
                     </ul>
                 </div>
             </div>

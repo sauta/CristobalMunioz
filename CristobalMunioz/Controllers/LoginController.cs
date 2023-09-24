@@ -51,7 +51,7 @@ namespace CristobalMunioz.Controllers
                                       Email = EA.EmailAddress1,
                                       Password = PS.PasswordHash,
                                       IDsPermiso = P.Permisos.Select(x => x.PermisoId),
-                                      NombrePermisos = P.Permisos.Select(x => x.Descripcion),
+                                      NombrePermisos = P.Permisos.Select(x => x.Permiso1),
                                   }).SingleOrDefaultAsync();
 
             if (userInfo != null)
@@ -65,7 +65,8 @@ namespace CristobalMunioz.Controllers
                         new Claim(ClaimTypes.Name, userInfo.IDEmployee.ToString()),
                         new Claim(ClaimTypes.NameIdentifier, userInfo.IDEmployee.ToString()),
                         new Claim(ClaimTypes.GivenName, userInfo.Nombre),
-                        new Claim(ClaimTypes.Name, userInfo.Nombre),
+                        new Claim(ClaimTypes.Surname, userInfo.Apellido.ToString()),
+                        new Claim(ClaimTypes.Email, userInfo.Email.ToString()),
                     };
 
                     var allPermisos = userInfo.IDsPermiso;
@@ -91,20 +92,21 @@ namespace CristobalMunioz.Controllers
             TempData["ErrorMessage"] = "Email o Contraseña Incorrectos";
             return RedirectToAction("Index", "Login");
         }
-        //public async Task<IActionResult> Login(string hash)
-        //{ 
-        //    var a = Argon2PasswordHasher.HashPassword(hash);
 
-        //    var info = a.ToString();
+        public async Task<IActionResult> Hashing(string hash)
+        {
+            var a = Argon2PasswordHasher.HashPassword(hash);
 
-        //    return RedirectToAction("Index", "Home");
-        //}
+            var info = a.ToString();
+
+            return View();
+        }
 
         [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("CookieAuth");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Login");
         }
 
     }

@@ -2,6 +2,7 @@
 using Isopoh.Cryptography.Argon2;
 using Isopoh.Cryptography.SecureArray;
 using System.Security.Cryptography;
+using CristobalMunioz.Models;
 
 namespace CristobalMunioz.Helpers
 {
@@ -10,6 +11,9 @@ namespace CristobalMunioz.Helpers
         public static string HashPassword(string password)
         {
             // Configure Argon2 with specific parameters
+
+            var salt = RandomNumberGenerator.GetBytes(16);
+
             var config = new Argon2Config
             {
                 Type = Argon2Type.DataIndependentAddressing,
@@ -18,7 +22,7 @@ namespace CristobalMunioz.Helpers
                 MemoryCost = 65536,
                 Lanes = 4,
                 Password = System.Text.Encoding.UTF8.GetBytes(password),
-                Salt = RandomNumberGenerator.GetBytes(16),
+                Salt = salt,
                 HashLength = 20
 
             };

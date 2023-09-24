@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "Hashing";
+
+    Layout = null;
+
+    string message = TempData["Hashing"] as string;
+    if (!String.IsNullOrEmpty(message))
+    {
+        <div class="message">
+            <p>@message</p>
+        </div>
+    }
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hashing</title>
+</head>
+<body>
+    <h2>Hashing</h2>
+
+    <form asp-controller="Login" asp-action="Login" method="post">
+         <div>
+        <label for="hash">Hasing:</label>
+        <input type="text" id="hash" name="hash" required />
+        </div>
+        <button type="submit">Log in</button>
+    </form>
+
+</body>
+</html>

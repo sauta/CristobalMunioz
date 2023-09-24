@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Layout = null;
+    //Layout = "~/Views/Shared/_Layout_login.cshtml";
 
     string message = TempData["ErrorMessage"] as string;
     if (!String.IsNullOrEmpty(message))
@@ -32,12 +34,8 @@
             <input type="password" id="cPassword" name="cPassword" required />
         </div>
 
-        <button type="submit">Log in</button>
-    @*    <div>
-            <label for="hash">Hasing:</label>
-            <input type="text" id="hash" name="hash" required />
-        </div>
-        <button type="submit">Log in</button>*@
+       <button type="submit">Log in</button>
     </form>
+
 </body>
 </html>
