@@ -106,7 +106,7 @@
                 @Html.DisplayFor(modelItem => item.ModifiedDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityId)
+                @Html.DisplayFor(modelItem => item.BusinessEntityId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BusinessEntityId">Edit</a> |
@@ -117,3 +117,81 @@
 }
     </tbody>
 </table>
+<div>
+    Page @(ViewData["PageNumber"]) of @(ViewData["TotalPages"])
+</div>
+<div>
+    Showing @(ViewData["PageSize"]) elements of a total of @(ViewData["TotalItems"])
+</div>
+
+<div class="pagination">
+    @if ((int)ViewData["TotalPages"] > 1)
+    {
+        <ul class="pagination">
+            @if ((int)ViewData["PageNumber"] > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=1&pageSize=@ViewData["PageSize"]">Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=@(((int)ViewData["PageNumber"]) - 1)&pageSize=@ViewData["PageSize"]">Anterior</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Primera</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                // Mostrar solo un número limitado de páginas cercanas a la página actual
+                if (i == (int)ViewData["PageNumber"] ||
+                i == (int)ViewData["PageNumber"] - 1 ||
+                i == (int)ViewData["PageNumber"] + 1)
+                {
+                    <li class="page-item @(i == (int)ViewData["PageNumber"] ? "active" : "")">
+                        <a class="page-link" href="?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i</a>
+                    </li>
+                }
+                else if (i == 1 || i == (int)ViewData["TotalPages"])
+                {
+                    // Mostrar siempre la primera y la última página
+                    <li class="page-item">
+                        <a class="page-link" href="?pageNumber=@i&pageSize=@ViewData["PageSize"]">@i</a>
+                    </li>
+                }
+                else if (i == (int)ViewData["PageNumber"] - 2 || i == (int)ViewData["PageNumber"] + 2)
+                {
+                    // Mostrar puntos suspensivos
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+
+            @if ((int)ViewData["PageNumber"] < (int)ViewData["TotalPages"])
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=@(((int)ViewData["PageNumber"]) + 1)&pageSize=@ViewData["PageSize"]">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?pageNumber=@(ViewData["TotalPages"])&pageSize=@ViewData["PageSize"]">Última</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Última</span>
+                </li>
+            }
+        </ul>
+    }
+</div>

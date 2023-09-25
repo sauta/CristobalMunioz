@@ -22,7 +22,6 @@
                 <th>@Html.DisplayNameFor(model => model.EmailPromotion)</th>
                 <th>@Html.DisplayNameFor(model => model.Rowguid)</th>
                 <th>@Html.DisplayNameFor(model => model.ModifiedDate)</th>
-                <th>@Html.DisplayNameFor(model => model.BusinessEntity.BusinessEntityId)</th>
                 <th></th>
             </tr>
         </thead>
@@ -39,7 +38,6 @@
                     <td>@Html.DisplayFor(modelItem => item.EmailPromotion)</td>
                     <td>@Html.DisplayFor(modelItem => item.Rowguid)</td>
                     <td>@Html.DisplayFor(modelItem => item.ModifiedDate)</td>
-                    <td>@Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityId)</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.BusinessEntityId" class="btn btn-primary btn-sm">Edit</a>
                         <a asp-action="Details" asp-route-id="@item.BusinessEntityId" class="btn btn-info btn-sm">Details</a>
